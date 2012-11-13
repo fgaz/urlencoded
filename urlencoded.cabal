@@ -1,6 +1,6 @@
 name:                urlencoded
 Cabal-Version:       >= 1.6
-version:             0.3.1
+version:             0.4.0
 synopsis:            Generate or process x-www-urlencoded data
 
 description:         Generate or process x-www-urlencoded data as it
