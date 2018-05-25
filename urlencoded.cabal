@@ -8,12 +8,12 @@ description:         Generate or process x-www-urlencoded data as it
                      <http://www.w3.org/TR/html401/interact/forms.html#h-17.13.4.1>
 
 category:            Web
-homepage:            https://github.com/pheaver/urlencoded
+homepage:            https://github.com/fgaz/urlencoded
 stability:           alpha
 license:             BSD3
 license-file:        LICENSE
 author:              Josh Hoyt, Philip Weaver
-maintainer:          philip.weaver@gmail.com
+maintainer:          francygazz@gmail.com
 build-type:          Custom
 
 Flag Test
