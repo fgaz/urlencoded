@@ -1,7 +1,7 @@
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 module Main where
 
-import Control.Monad ( liftM, replicateM, liftM2 )
+import Control.Monad ( liftM, replicateM )
 
 import Data.Monoid ( mconcat )
 import Data.Maybe ( isJust )
@@ -19,11 +19,9 @@ instance Arbitrary URLEncoded where
     arbitrary = do
       numPairs <- sized $ \n -> choose (0, n)
       importList `liftM` replicateM numPairs (two arbitraryQueryArg)
-    coarbitrary = undefined
 
-instance Applicative Gen where
-    (<*>) = liftM2 ($)
-    pure = return
+two :: Gen b -> Gen (b, b)
+two = fmap (\[x,y] -> (x,y)) . vectorOf 2
 
 arbitraryQueryArg :: Gen String
 arbitraryQueryArg = do

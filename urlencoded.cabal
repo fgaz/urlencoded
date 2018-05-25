@@ -1,5 +1,5 @@
 name:                urlencoded
-Cabal-Version:       >= 1.6
+Cabal-Version:       >= 1.8
 version:             0.4.1
 synopsis:            Generate or process x-www-urlencoded data
 
@@ -16,9 +16,9 @@ author:              Josh Hoyt, Philip Weaver
 maintainer:          francygazz@gmail.com
 build-type:          Simple
 
-Flag Test
-  Description: Build the test executable
-  Default: False
+source-repository head
+  type:     git
+  location: git://github.com/fgaz/urlencoded.git
 
 Flag network-uri
   description: Get Network.URI from the network-uri package
@@ -34,18 +34,15 @@ Library
   hs-source-dirs:      src
   exposed-modules:     Data.URLEncoded
 
--- This executable is not installed by the (custom) Setup program. It is
--- used by the test hook (cabal test)
-Executable test
-  if flag(test)
-    Buildable: True
-    build-depends:
-      QuickCheck >= 1.2 && < 1.3
-
-  else
-    Buildable: False
+Test-suite test
+  type: exitcode-stdio-1.0
+  build-depends: base
+               , QuickCheck >= 2.11 && < 2.12
+               , network
+               , network-uri
+               , urlencoded
 
   GHC-Options: -Wall
   Main-is: TestDriver.hs
-  HS-Source-Dirs: src, test
-  X-Test-Executable: true
+  HS-Source-Dirs: test
+
