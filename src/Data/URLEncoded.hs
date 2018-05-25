@@ -1,4 +1,4 @@
-{-# LANGUAGE GeneralizedNewtypeDeriving, FlexibleInstances #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving, FlexibleInstances, CPP #-}
 -- |Implements a data type for constructing and destructing
 -- x-www-urlencoded strings. See
 -- <http://www.w3.org/TR/html401/interact/forms.html#h-17.13.4.1>
@@ -41,7 +41,11 @@ import Prelude hiding ( null, lookup, filter )
 import Data.List.Split ( splitOn )
 import Control.Monad ( liftM )
 import Control.Arrow ( (>>>) )
+#if MIN_VERSION_base(4,8,0)
 import Control.Monad.Except ( MonadError )
+#else
+import Control.Monad.Error ( MonadError )
+#endif
 import Network.URI ( unEscapeString, escapeURIString, isUnreserved, URI(uriQuery) )
 import Data.Monoid ( Monoid, mappend )
 import Data.List ( intercalate )
