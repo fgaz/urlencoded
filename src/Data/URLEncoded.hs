@@ -48,12 +48,19 @@ import Control.Monad.Error ( MonadError )
 #endif
 import Network.URI ( unEscapeString, escapeURIString, isUnreserved, URI(uriQuery) )
 import Data.Monoid ( Monoid, mappend )
+#if MIN_VERSION_base(4,9,0)
+import Data.Semigroup ( Semigroup )
+#endif
 import Data.List ( intercalate )
 import Data.Maybe ( fromMaybe )
 
 -- | A container for URLEncoded data
 newtype URLEncoded = URLEncoded { pairs :: [(String, String)] }
+#if MIN_VERSION_base(4,9,0)
+    deriving (Semigroup, Monoid, Eq)
+#else
     deriving (Monoid, Eq)
+#endif
 
 class AddURLEncoded a where
     (%?) :: URLEncode args => a -> args -> a
