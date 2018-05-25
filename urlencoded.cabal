@@ -27,9 +27,11 @@ Flag network-uri
 Library
   build-depends:       base == 4.*, mtl >= 1.1, split == 0.2.*
   if flag(network-uri)
-    build-depends: network-uri >= 2.6, network >= 2.6
+    build-depends: network-uri >= 2.6
+                 , network >= 2.6
   else
-    build-depends: network-uri < 2.6, network < 2.6 && >= 2.2
+    build-depends: network-uri < 2.6
+                 , network < 2.6 && >= 2.2
   ghc-options:         -Wall
   hs-source-dirs:      src
   exposed-modules:     Data.URLEncoded
@@ -38,9 +40,13 @@ Test-suite test
   type: exitcode-stdio-1.0
   build-depends: base
                , QuickCheck >= 2.11 && < 2.12
-               , network
-               , network-uri
                , urlencoded
+  if flag(network-uri)
+    build-depends: network-uri >= 2.6
+                 , network >= 2.6
+  else
+    build-depends: network-uri < 2.6
+                 , network < 2.6 && >= 2.2
 
   GHC-Options: -Wall
   Main-is: TestDriver.hs
