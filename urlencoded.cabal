@@ -13,7 +13,7 @@ stability:           alpha
 license:             BSD3
 license-file:        LICENSE
 author:              Josh Hoyt, Philip Weaver
-maintainer:          francygazz@gmail.com
+maintainer:          Francesco Gazzetta <fgaz@fgaz.me>
 build-type:          Simple
 
 source-repository head
