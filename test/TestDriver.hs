@@ -77,11 +77,11 @@ badKey u = 'x':concat (keys u)
 main :: IO ()
 main = mapM_ quickCheck
        [ property $ \u ->
-             importString (export u) == (Right u :: Either String URLEncoded)
+             importString (export u) == (Just u :: Maybe URLEncoded)
 
        , property $ \u ->
            let s = export u
-               expected = Right s :: Either String String
+               expected = Just s
            in (export `liftM` importString s) == expected
 
        , property $ \u1 u2 ->
@@ -122,7 +122,5 @@ main = mapM_ quickCheck
        , forAll (multiLists "repeated") $ \(_, u) ->
            length (lookupAll "repeated" u) > 0
 
-       , property $ \u -> case lookup1 (badKey u) u :: Either String String of
-                            Left _ -> True
-                            Right _ -> False
+       , property $ \u -> lookup1 (badKey u) u == Nothing
        ]

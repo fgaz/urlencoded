@@ -41,11 +41,6 @@ import Prelude hiding ( null, lookup, filter )
 import Data.List.Split ( splitOn )
 import Control.Monad ( liftM )
 import Control.Arrow ( (>>>) )
-#if MIN_VERSION_base(4,8,0)
-import Control.Monad.Except ( MonadError )
-#else
-import Control.Monad.Error ( MonadError )
-#endif
 import Network.URI ( unEscapeString, escapeURIString, isUnreserved, URI(uriQuery) )
 import Data.Monoid ( Monoid, mappend )
 #if MIN_VERSION_base(4,9,0)
@@ -177,7 +172,7 @@ instance Show URLEncoded where
     showsPrec _ q = (export q ++)
 
 -- |Parse this string as x-www-urlencoded
-importString :: MonadError e m => String -> m URLEncoded
+importString :: MonadFail m => String -> m URLEncoded
 importString "" = return empty
 importString s = liftM importList $ mapM parsePair $ splitOn "&" s
     where parsePair p =
@@ -189,7 +184,7 @@ importString s = liftM importList $ mapM parsePair $ splitOn "&" s
                 unknown -> error $ "impossible: " ++ show unknown
           unesc = unEscapeString . intercalate "%20" . splitOn "+"
 
-importURI :: MonadError e m => URI -> m URLEncoded
+importURI :: MonadFail m => URI -> m URLEncoded
 importURI u = case uriQuery u of
                 ('?':s) -> importString s
                 [] -> return empty
@@ -197,7 +192,7 @@ importURI u = case uriQuery u of
 
 -- |Return the /first/ value for the given key, or throw an error if the
 -- key is not present in the URLEncoded data.
-lookup1 :: (URLShow a, MonadError e m) => a -> URLEncoded -> m String
+lookup1 :: (URLShow a, MonadFail m) => a -> URLEncoded -> m String
 lookup1 k = lookup k >>> maybe missing return
     where missing = fail $ "Key not found: " ++ urlShow k
 
