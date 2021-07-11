@@ -172,6 +172,7 @@ instance Show URLEncoded where
     showsPrec _ q = (export q ++)
 
 -- |Parse this string as x-www-urlencoded
+-- @since 0.5.0.0
 importString :: MonadFail m => String -> m URLEncoded
 importString "" = return empty
 importString s = liftM importList $ mapM parsePair $ splitOn "&" s
@@ -184,6 +185,7 @@ importString s = liftM importList $ mapM parsePair $ splitOn "&" s
                 unknown -> error $ "impossible: " ++ show unknown
           unesc = unEscapeString . intercalate "%20" . splitOn "+"
 
+-- | @since 0.5.0.0
 importURI :: MonadFail m => URI -> m URLEncoded
 importURI u = case uriQuery u of
                 ('?':s) -> importString s
@@ -192,6 +194,7 @@ importURI u = case uriQuery u of
 
 -- |Return the /first/ value for the given key, or throw an error if the
 -- key is not present in the URLEncoded data.
+-- @since 0.5.0.0
 lookup1 :: (URLShow a, MonadFail m) => a -> URLEncoded -> m String
 lookup1 k = lookup k >>> maybe missing return
     where missing = fail $ "Key not found: " ++ urlShow k
