@@ -1,3 +1,10 @@
+name: get-tested
+
+on:
+  pull_request:
+  push:
+    branches: ["master"]
+
 jobs:
   generate-matrix:
     name: "Generate matrix from cabal"
@@ -9,9 +16,8 @@ jobs:
         id: set-matrix
         uses: kleidukos/get-tested@v0.1.7.1
         with:
-          cabal-file: get-tested.cabal
+          cabal-file: urlencoded.cabal
           ubuntu-version: "latest"
-          macos-version: "latest"
           version: 0.1.7.1
   tests:
     name: ${{ matrix.ghc }} on ${{ matrix.os }}
@@ -19,3 +25,15 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix: ${{ fromJSON(needs.generate-matrix.outputs.matrix) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Haskell
+        id: setup-haskell
+        uses: haskell-actions/setup@v2
+        with:
+          ghc-version: ${{ matrix.ghc }}
+          cabal-version: "latest"
+      - name: Test
+        run: |
+          cabal test
