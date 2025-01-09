@@ -30,7 +30,7 @@ Flag network-uri
   default: True
 
 Library
-  build-depends:       base >= 4.13 && <4.18
+  build-depends:       base >= 4.13 && <4.19
                      , mtl >= 1.1 && <2.4
                      , split == 0.2.*
   if flag(network-uri)
